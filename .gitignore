@@ -3,3 +3,4 @@ node_modules
 *.crt
 *.key
 server/static/**.html
+server/static/**/**.js
