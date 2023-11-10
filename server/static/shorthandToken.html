@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var SERVER_ADDRESS = "https://192.168.1.152:3443";
+    </script>
+    <link rel="stylesheet" href="./styling/common.css">
+    <link rel="stylesheet" href="/styling/shorthandToken.css">
+</head>
+
+<body>
+    <div id="shorthandToken" class="mustBeLoggedIn">
+    Here, you will get a shorthand token.<br /><br /><button id="generateShorthandToken">Generate Shorthand
+        Token</button>
+    <div id="shorthandTokenBox">
+
+        <div>
+            <div>Shorthand Token</div>
+            <div id="message"></div>
+            <div>If you need another token, simply press the generate button above again!</div>
+            <div>
+                <input type="text" value="" id="shorthandTokenPlace" readonly>
+            </div>
+        </div>
+        <div>
+            <button id="copyShorthandToken">Copy</button>
+            <button id="discardShorthandToken">Discard</button>
+        </div>
+
+    </div>
+    <div>
+        <div>Enter it on <b>Citrahold 3DS</b> by going into Settings -> "Input a shorthand token"</div>
+        <div>Or enter it on <b>Citrahold PC</b> in the box on startup, and then click Verify</div>
+        <p>You will need to generate a new shorthand token every time you link a device (PC or 3DS).</p>
+        <p>It must be entered exactly correctly, case included.</p>
+
+    </div>
+</div>
+
+    <script type="module" src="/js/shorthandToken.js"></script>
+</body>
+
+</html>

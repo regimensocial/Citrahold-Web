@@ -1,0 +1,49 @@
+<div id="login">
+    <div class="notLoggedIn">
+        <table>
+            <tr>
+                <td>
+                    <label for="username">Email </label>
+                </td>
+                <td>
+                    <input type="email" id="email" name="email" maxlength="254" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password">Password </label>
+                </td>
+                <td>
+                    <input type="password" id="password" name="password" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" id="loginButton" value="Login" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="button" id="registerButton" value="Create Account" />
+                </td>
+            </tr>
+        </table>
+        <ul class="notices">
+            <li class="capsLock">
+                Caps Lock is on.
+            </li>
+            <li class="invalidEmail">
+                Invalid email address format.
+            </li>
+            <li class="invalidPassword">
+                Password can't be blank.
+            </li>
+            <li class="invalidLogin">
+                Invalid email or password.
+            </li>
+        </ul>
+    </div>
+    <div class="loggedIn">
+        You're already logged in! <button id="logoutButton">Logout?</button>
+    </div>
+</div>

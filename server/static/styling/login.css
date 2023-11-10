@@ -1,0 +1,23 @@
+.notLoggedIn {
+    display: block;
+}
+
+.loggedIn {
+    display: none;
+}
+
+.notices .capsLock {
+    display: none;
+}
+
+.notices .invalidEmail {
+    display: none;
+}
+
+.notices .invalidPassword {
+    display: none;
+}
+
+.notices .invalidLogin {
+    display: none;
+}

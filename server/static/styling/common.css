@@ -1,0 +1,10 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.mustBeLoggedIn {
+    display: none;
+}
