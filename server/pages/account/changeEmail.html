@@ -1,0 +1,67 @@
+<div id="changeEmail" class="mustBeLoggedIn">
+
+    <div id="notChanged">
+        <table>
+            <tr>
+                <td>
+                    <label for="email">Email </label>
+                </td>
+                <td>
+                    <input type="email" id="email" name="email" maxlength="254" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password">Current Password </label>
+                </td>
+                <td>
+                    <input type="password" id="password" name="password" />
+                </td>
+            </tr>
+        </table>
+        <ul class="notices">
+            <li class="capsLock">
+                Caps Lock is on.
+            </li>
+            <li class="invalidEmail">
+                Email must be a valid email address.
+            </li>
+            <li class="invalidPassword">
+                Password can't be blank.
+            </li>
+            <li class="invalidLogin">
+                Invalid password.
+            </li>
+
+            <li class="other">
+            </li>
+        </ul>
+
+        <button id="changeEmailButton">
+            Change Email
+        </button>
+
+        <div id="dim">
+        </div>
+
+        <div class="popupBox">
+
+            <tr>
+                <td colspan="2">Your account will be totally unusable on all devices until you log in again and verify
+                    your email.<br />
+                    Pleae make sure <span class="emailPlace"></span> is the 100% correct email address.<br />
+                    Change your email?<br /></td>
+            </tr>
+            <tr>
+                <td><button id="cancelChange">Don't.</button></td>
+                <td><button id="confirmChange">Yes, do it.</button></td>
+            </tr>
+            </table>
+        </div>
+
+    </div>
+    <div id="changed">
+        Your email has been changed. You must now log in again and verify your email.
+        <div>You will need to log in again <a href="/login.html">here.</a></div>
+    </div>
+</div>

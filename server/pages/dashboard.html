@@ -1,3 +1,50 @@
 <div id="dashboard" class="mustBeLoggedIn">
     Hello
+
+    <button id="refreshButton">Refresh</button>
+    <div>
+        <div>saves</div>
+        <table>
+            <tr>
+                <th>Game ID</th>
+                <th>Last Upload</th>
+                <th><!--Buttons--></th>
+            </tr>
+            <tbody id="savesGames">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <div>extdata</div>
+        <table>
+            <tr>
+                <th>Game ID</th>
+                <th>Last Upload</th>
+                <th>Update</th>
+            </tr>
+            <tbody id="extdataGames">
+
+            </tbody>
+        </table>
+        <div>To delete a save, please blank the game ID and then click Update.</div>
+    </div>
+
+
+    <div id="dim">
+    </div>
+
+    <div class="popupBox">
+        <table>
+            <tr>
+                <td colspan="2">This will delete the save data for the game ID <span id="deleteGameID"></span>.<br/>This can't be undone. Are you sure?</td>
+            </tr>
+            <tr>
+                <td><button id="cancelDelete">Don't.</button></td>
+                <td><button id="confirmDelete">Yes, delete it.</button></td>
+            </tr>
+        </table>
+    </div>
+
 </div>

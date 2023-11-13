@@ -3,7 +3,7 @@
         <table>
             <tr>
                 <td>
-                    <label for="username">Email </label>
+                    <label for="email">Email </label>
                 </td>
                 <td>
                     <input type="email" id="email" name="email" maxlength="254" />
@@ -42,6 +42,23 @@
                 Invalid email or password.
             </li>
         </ul>
+
+        <div>
+            <a id="forgotPasswordLink" href="/forgotPassword.html">Forgot Password?</a>
+        </div>
+
+        <div id="verificationBox">
+            <div>
+                Please check your email for a verification link.
+                If you don't see it, please check your spam folder.
+            </div>
+
+            <br/>
+            <input type="text" id="verificationCode" name="verificationCode" maxlength="10" />
+
+            <p><button id="verifyButton">Verify</button>
+        </div>
+
     </div>
     <div class="loggedIn">
         You're already logged in! <button id="logoutButton">Logout?</button>

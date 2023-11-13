@@ -1,0 +1,55 @@
+<div id="regenerateTokenPage" class="mustBeLoggedIn">
+
+    <div id="notRegenerated">
+        <table>
+            <tr>
+                <td>
+                    <label for="password">Password </label>
+                </td>
+                <td>
+                    <input type="password" id="password" name="password" />
+                </td>
+            </tr>
+        </table>
+        <ul class="notices">
+            <li class="capsLock">
+                Caps Lock is on.
+            </li>
+            <li class="invalidPassword">
+                Password can't be blank.
+            </li>
+            <li class="invalidLogin">
+                Invalid password.
+            </li>
+
+            <li class="other">
+            </li>
+        </ul>
+
+        <button id="regenerateToken">
+            Regenerate Token
+        </button>
+
+        <div id="dim">
+        </div>
+
+        <div class="popupBox">
+
+            <tr>
+                <td colspan="2">This will create a new token, logging you out of all devices.<br />You will have to
+                    create a shorthand token for everything again. Are
+                    you sure?<br /></td>
+            </tr>
+            <tr>
+                <td><button id="cancelRegen">Don't.</button></td>
+                <td><button id="confirmRegen">Yes, do it.</button></td>
+            </tr>
+            </table>
+        </div>
+
+    </div>
+    <div id="regenerated">
+        Your token has been regenerated. You will have to log in again on all devices.
+        <div>Note: Your token has already automatically been swapped on this browser. No need to log in again.</div>
+    </div>
+</div>

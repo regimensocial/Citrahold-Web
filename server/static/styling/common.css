@@ -8,3 +8,46 @@ body {
 .mustBeLoggedIn {
     display: none;
 }
+
+table {
+    text-align: left;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+#dim {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    z-index: 1;
+    opacity: 0.3;
+    display: none;
+}
+
+.popupBox {
+    background-color: white;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 50px;
+    display: none;
+}
+
+.popupBox td button {
+    width: 100%;
+}
+
+.notices li {
+    display: none;
+}

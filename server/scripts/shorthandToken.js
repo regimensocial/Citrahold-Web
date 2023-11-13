@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     console.log("count");
                                     let minutes = Math.floor(difference / 60);
                                     let seconds = difference % 60;
-                                    messageBox.innerHTML = `Here is your shorthand token. You must use it within ${minutes ? (minutes + " minute") : ""} ${(minutes && seconds) ? "and" : ""} ${seconds && (seconds + " seconds")} or it will expire. It can only be used once.`;
+                                    messageBox.innerHTML = `Here is your shorthand token. You must use it within ${minutes ? (minutes + " minute") : ""} ${(minutes && seconds) ? "and " : ""} ${seconds ? (seconds + " seconds") : ""} or it will expire. It can only be used once.`;
                                 }
                             }
                         });

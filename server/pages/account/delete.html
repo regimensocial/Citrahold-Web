@@ -1,0 +1,46 @@
+<div id="deleteAccount" class="mustBeLoggedIn">
+
+    <table>
+        <tr>
+            <td>
+                <label for="password">Password </label>
+            </td>
+            <td>
+                <input type="password" id="password" name="password" />
+            </td>
+        </tr>
+    </table>
+    <ul class="notices">
+        <li class="capsLock">
+            Caps Lock is on.
+        </li>
+        <li class="invalidPassword">
+            Password can't be blank.
+        </li>
+        <li class="invalidLogin">
+            Invalid password.
+        </li>
+
+        <li class="other">
+        </li>
+    </ul>
+
+    <a href="#" id="deleteLink">Delete my account.</a>
+
+    <div id="dim">
+    </div>
+
+    <div class="popupBox">
+
+        <tr>
+            <td colspan="2">This will permanently delete your account and all of your data.<br />It can't be undone. Are
+                you sure?</td>
+        </tr>
+        <tr>
+            <td><button id="cancelDelete">Don't.</button></td>
+            <td><button id="confirmDelete">Yes, delete it.</button></td>
+        </tr>
+        </table>
+    </div>
+
+</div>

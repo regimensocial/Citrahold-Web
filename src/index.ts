@@ -1,4 +1,5 @@
 import axios from "axios";
+import { downloadZip, makeZip } from "client-zip";
 
 var serverAddress = "";
 
@@ -9,21 +10,35 @@ let loggedIn = false;
 
 axios.defaults.withCredentials = true;
 
-var token = "unknown";
+type userInfoType = {
+    email: string,
+    id: string,
+    directory: number,
+}
 
 type serverResponse = {
+    userID: string,
+    user: userInfoType,
     token: string,
     shorthandToken: string,
     error: string,
     success: boolean | string, //?
-    exists: boolean
+    exists: boolean,
+    saves: Array<string>,
+    games: Array<string>,
+    files: Array<string>,
+    webStatus: string,
+    note: string,
 }
 
-var handleRequest = (action: string, data: object, res: Function, rej: Function) => axios.post(
+var userInfo: userInfoType;
+
+var handleRequest = (action: string, data: object, res: Function, rej: Function, downloadingBinary: boolean = false) => axios.post(
     `${serverAddress}/${action}`,
     data,
     {
         withCredentials: true,
+        responseType: downloadingBinary ? "blob" : "json",
         headers: { 'Content-Type': 'application/json' }
     }).then((r) => {
         if (!production) {
@@ -34,6 +49,22 @@ var handleRequest = (action: string, data: object, res: Function, rej: Function)
         rej(r);
     });
 
+const getTokenFromShorthand = (shorthandToken: string): Promise<string> => {
+    return new Promise((finalResolve, finalReject) => {
+        (new Promise((resolve, reject) => {
+            handleRequest("getToken", {
+                shorthandToken
+            }, resolve, reject);
+        })).then((r: serverResponse) => {
+            finalResolve(r.token);
+        }).catch((r) => {
+            finalReject(
+                r.response.data
+            );
+        })
+    });
+}
+
 const citrahold = {
     setServerAddress: (address: string) => {
         serverAddress = address;
@@ -41,26 +72,54 @@ const citrahold = {
         return new Promise((finalResolve, finalReject) => {
             (new Promise((resolve, reject) => {
                 handleRequest("areyouawake", {}, resolve, reject);
-            })).then((r) => {
+            })).then((r: serverResponse) => {
                 online = true;
-                (new Promise((resolve, reject) => {
-                    handleRequest("getUserID", {
-                        test: "test"
-                    }, resolve, reject);
-                })).then((r) => {
+                if (r.user) {
+                    userInfo = r.user;
                     loggedIn = true;
-                }).catch((r) => {
-                    loggedIn = false;
-                    finalResolve(false);
-                }).then(() => {
-                    finalResolve(true);
-                });
+                }
+
+                finalResolve(loggedIn);
 
             }).catch((r) => {
                 online = false;
                 finalReject(false);
             });
         });
+    },
+
+    verifyEmail: (userID: string, code: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                // Server will let us login
+                handleRequest("verifyEmail", {
+                    userID,
+                    code
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                if (r.token) {
+                    (new Promise((resolve, reject) => {
+                        handleRequest("setTokenCookie", {
+                            token: r.token
+                        }, resolve, reject);
+                    }))
+                } else {
+                    finalReject(
+                        r
+                    );
+                }
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            }).then((r) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            });
+        })
     },
 
     register: (email: string, password: string) => {
@@ -72,9 +131,22 @@ const citrahold = {
                 }, resolve, reject);
             })).then((r: serverResponse) => {
                 (new Promise((resolve, reject) => {
-                    handleRequest("setTokenCookie", {
-                        token: r.token
-                    }, resolve, reject);
+
+                    if (r.token) {
+                        // Server will let us login
+                        handleRequest("setTokenCookie", {
+                            token: r.token
+                        }, resolve, reject);
+                    } else if (r.userID) {
+                        // Server wants us to verify our email
+
+                        finalResolve({
+                            userID: r.userID
+                        })
+
+                    }
+
+
                 })).then((r) => {
                     finalResolve(true);
                 }).catch((r) => {
@@ -89,20 +161,122 @@ const citrahold = {
             })
         });
     },
-    getTokenFromShorthand: (shorthandToken: string) => {
+
+
+    getTokenFromShorthand,
+
+    loginWithShorthandToken: (shorthandToken: string) => {
         return new Promise((finalResolve, finalReject) => {
-            (new Promise((resolve, reject) => {
-                handleRequest("getToken", {
-                    shorthandToken
-                }, resolve, reject);
-            })).then((r: serverResponse) => {
-                finalResolve(r.token);
+            getTokenFromShorthand(shorthandToken).then((token: string) => {
+                (new Promise((resolve, reject) => {
+                    handleRequest("setTokenCookie", {
+                        token
+                    }, resolve, reject);
+                })).then((r) => {
+                    finalResolve(true);
+
+                }).catch((r) => {
+                    finalReject(
+                        r.response.data
+                    );
+                })
             }).catch((r) => {
                 finalReject(
-                    r.response.data
+                    r.response
                 );
+            });
+        });
+    },
+
+    getFiles: (extdata: boolean = false, game: string = "") => {
+        var pageAddress = !extdata ? "getSaves" : "getExtdata";
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest(pageAddress, {
+                    game,
+                    forWeb: true
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                finalResolve(r.games);
+            }).catch((r) => {
+                finalReject(r.response.data);
             })
         });
+    },
+    renameGame: (extdata: boolean = false, oldName: string, newName: string) => {
+        var pageAddress = !extdata ? "renameSaves" : "renameExtdata";
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest(pageAddress, {
+                    game: oldName,
+                    newGame: newName
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(r.response.data);
+            })
+        });
+    },
+    deleteGame: (extdata: boolean = false, game: string) => {
+        var pageAddress = !extdata ? "deleteSaves" : "deleteExtdata";
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest(pageAddress, {
+                    game
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(r.response.data);
+            })
+        });
+    },
+    downloadSave: (extdata: boolean = false, game: string) => {
+        var pageAddress = !extdata ? "downloadSaves/" : "downloadExtdata/";
+
+        (new Promise((resolve, reject) => {
+            handleRequest(pageAddress, {
+                game
+            }, resolve, reject);
+        })).then(async (r: serverResponse) => {
+
+            var downloadedFiles = [] as Array<{ name: string, input: any }>;
+            var promises = [] as Array<Promise<any>>;
+
+            r.files.forEach((file: string) => {
+                const promise = new Promise((resolve, reject) => {
+                    handleRequest(pageAddress, { game, file }, resolve, reject, true);
+                }).then((response: any) => {
+                    console.log(response);
+                    downloadedFiles.push({
+                        name: file,
+                        input: response
+                    });
+                }).catch((error) => {
+                    console.error(error.response.data);
+                });
+
+                promises.push(promise);
+            });
+
+            // Wait for all promises to resolve
+            await Promise.all(promises);
+
+            // Now all asynchronous operations in the forEach loop have completed
+
+            const blob = await downloadZip(downloadedFiles).blob();
+            const link = document.createElement("a")
+            link.href = URL.createObjectURL(blob)
+            link.download = game + ".zip";
+            link.click()
+            link.remove()
+
+
+        }).catch((r) => {
+            console.error(r);
+        })
+
     },
     doesShorthandTokenExist: (shorthandToken: string) => {
         return new Promise((finalResolve, finalReject) => {
@@ -175,7 +349,7 @@ const citrahold = {
         return new Promise((finalResolve, finalReject) => {
             (new Promise((resolve, reject) => {
                 handleRequest("deleteTokenCookie", {
-                }, resolve, reject);
+                }, resolve, reject);//
             })).then((r) => {
                 loggedIn = false;
                 finalResolve(true);
@@ -184,8 +358,100 @@ const citrahold = {
             })
         });
     },
+    changeEmail: (password: string, newEmail: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest("changeEmail", {
+                    password,
+                    email: newEmail
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            })
+        });
+    },
+    regenerateToken: (password: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest("getToken", {
+                    password,
+                    email: userInfo.email,
+                    new: true
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                loggedIn = true;
+
+                (new Promise((resolve, reject) => {
+                    handleRequest("setTokenCookie", {
+                        token: r.token
+                    }, resolve, reject);
+                })).then((r) => {
+                    finalResolve(true);
+                }).catch((r) => {
+                    finalReject(
+                        r.response.data
+                    );
+                })
+
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            })
+        });
+    },
+    deleteAccount: (password: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest("deleteAccount", {
+                    password
+                }, resolve, reject);
+            })).then((r) => {
+                loggedIn = false;
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            })
+        });
+    },
+    forgotPassword: (email: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest("forgotPassword", {
+                    email
+                }, resolve, reject);
+            })).then((r) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            })
+        });
+    },
+    changePassword: (oldPassword: string, newPassword: string) => {
+        return new Promise((finalResolve, finalReject) => {
+            (new Promise((resolve, reject) => {
+                handleRequest("changePassword", {
+                    password: oldPassword,
+                    newPassword
+                }, resolve, reject);
+            })).then((r: serverResponse) => {
+                finalResolve(true);
+            }).catch((r) => {
+                finalReject(
+                    r.response.data
+                );
+            })
+        });
+    },
     setToken: (newToken: string) => {
-        token = newToken;
         return new Promise((finalResolve, finalReject) => {
 
 
