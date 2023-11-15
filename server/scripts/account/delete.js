@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             document.body.addEventListener("keyup", (e) => {
-                // check if email or password is in focus
 
                 notices.other.innerHTML = "";
                 notices.other.style.display = "none";
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const caps = e.getModifierState && e.getModifierState('CapsLock');
                     notices.capsLock.style.display = (caps) ? "block" : "none";
                 }
-                // if is enter
+                
                 if (e.code === "Enter") {
                     deleteLink.click();
                 }

@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             document.body.addEventListener("keyup", (e) => {
-                // check if email or password is in focus
                 if (document.activeElement === oldPassword || document.activeElement === newPassword) {
 
                     notices.invalidCredentials.style.display = "none";
