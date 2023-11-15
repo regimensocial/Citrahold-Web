@@ -1,5 +1,5 @@
 // this is purely for your editor to hook up intellisense
-import citrahold from "../../src/index.ts";
+import citrahold from "../../../src/index.ts";
 // it won't be included in the build
 /*SPLIT*/
 import "/js/citrahold.js";
@@ -15,6 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
             accountPage.style.display = "block";
 
             const logoutButton = document.querySelector("#logout");
+
+
+            const userEmail = document.querySelector("#userEmail");
+            const userID = document.querySelector("#userID");
+            const fileUsage = document.querySelector("#fileUsage");
+
+            const userInfo = citrahold.getUserInfo();
+            const maxUserDirSize = citrahold.getMaxUserDirSize();
+
+            userEmail.innerHTML = userInfo.email;
+            userID.innerHTML = userInfo.id;
+            fileUsage.innerHTML = `${userInfo.directorySize}KB/${maxUserDirSize}KB (${((userInfo.directorySize/maxUserDirSize)*100).toFixed(2)}%)`;
 
             logoutButton.addEventListener("click", () => {
                 citrahold.logout().then(() => {

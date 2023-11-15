@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e js,html ./index.js"
+    "start": "npm-run-all --parallel buildOnly server",
+    "server": "nodemon -e js,html,css,json --ignore './static/' --ignore './dist' ./index.js",
+    "buildOnly": "node build.js",
+    "minify": "gulp",
+    "build": "npm run buildOnly && npm run minify"
   },
   "author": "",
   "license": "ISC",

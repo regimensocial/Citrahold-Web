@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (window.location.href.split("?")[1] == "reset") {
                 fromEmpty = true;
                 oldPasswordContainer.style.display = "none";
+                document.querySelector(".caption").innerHTML = "hahah you forgot your password!";
             }
 
             function validatePasswords() {

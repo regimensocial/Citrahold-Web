@@ -35,6 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const changedPage = document.querySelector("#changed");
             const notChangedPage = document.querySelector("#notChanged");
 
+            const emailPlace = document.querySelector(".emailPlace");
+
             const notices = {
                 invalidEmail: document.querySelector(".invalidEmail"),
                 invalidPassword: document.querySelector(".invalidPassword"),
@@ -43,8 +45,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 other: document.querySelector(".other")
             }
 
+
             function displayPopUp(shouldDisplay) {
                 if (shouldDisplay) {
+                    emailPlace.innerHTML = email.value;
                     popUp.style.display = "block";
                     dimBg.style.display = "block";
                 } else {
@@ -59,7 +63,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             document.body.addEventListener("keyup", (e) => {
-                // check if email or password is in focus
 
                 notices.other.innerHTML = "";
                 notices.other.style.display = "none";
@@ -78,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (document.activeElement === newEmail) {
                     notices.invalidEmail.style.display = (validateEmail(newEmail.value)) ? "none" : "block";
                 }
-                // if is enter
+                
                 if (e.code === "Enter") {
                     changeEmailButton.click();
                 }
@@ -118,6 +121,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     notices.other.innerHTML = err.error;
                     notices.other.style.display = "block";
+
+                    displayPopUp(false);
+
                 })
 
             });

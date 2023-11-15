@@ -9,5 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#status").innerHTML = "Online!";
     }).catch((err) => {
         document.querySelector("#status").innerHTML = "Server is offline.";
+        console.error(err);
     });
 });

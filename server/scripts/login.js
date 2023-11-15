@@ -12,7 +12,6 @@ const validateEmail = (email) => {
         );
 };
 
-
 document.addEventListener("DOMContentLoaded", () => {
     citrahold.setServerAddress(SERVER_ADDRESS).then((loggedIn) => {
         console.log("Online")
@@ -50,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             document.body.addEventListener("keyup", (e) => {
-                // check if email or password is in focus
                 if (document.activeElement === email || document.activeElement === password) {
 
                     notices.invalidLogin.style.display = "none";
@@ -65,14 +63,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     const caps = e.getModifierState && e.getModifierState('CapsLock');
                     notices.capsLock.style.display = (caps) ? "block" : "none";
                 }
-                // if is enter
                 if (e.code === "Enter") {
                     (window.location.hash === "#register") ? registerButton.click() : loginButton.click();
                 }
             });
 
             loginButton.addEventListener("click", () => {
-                // Attempt to login
                 window.location.hash = "#login";
 
                 notices.invalidEmail.style.display = (validateEmail(email.value)) ? "none" : "block";
@@ -83,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.location.href = "/"
                     }).catch((err) => {
                         notices.invalidLogin.style.display = "block";
-                        // if status is 403, account is not verified
                         if (err.webStatus) {
                             // INTERNAL_SERVER_ERROR | VERIFY_EMAIL | INVALID_DETAILS | PASSWORD_RESET
                             switch (err.webStatus) {
@@ -141,7 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const logoutButton = document.querySelector("#logoutButton");
 
             logoutButton.addEventListener("click", () => {
-                // Attempt to login
 
                 citrahold.logout().then(() => {
                     window.location.href = "/login.html";

@@ -1,25 +1,41 @@
 <div id="shorthandToken" class="mustBeLoggedIn">
-    Here, you will get a shorthand token.<br /><br /><button id="generateShorthandToken">Generate Shorthand
+    <h1>shorthand token generation.</h1>
+    <div class="caption">
+        you can generate a shorthand token here! You need one of these to link your 3DS (and PC) to this account.
+    </div>
+
+
+    <button id="generateShorthandToken">Generate Shorthand
         Token</button>
+        
     <div id="shorthandTokenBox">
 
         <div>
-            <div>Shorthand Token</div>
-            <div id="message"></div>
-            <div>If you need another token, simply press the generate button above again!</div>
             <div>
                 <input type="text" value="" id="shorthandTokenPlace" readonly>
             </div>
+            <div>
+                <button id="copyShorthandToken">Copy</button>
+                <button id="discardShorthandToken">Discard</button>
+            </div>
+
+            <div id="message"></div>
+            <div>If you need another token, simply press the generate button above again!</div>
+            
         </div>
-        <div>
-            <button id="copyShorthandToken">Copy</button>
-            <button id="discardShorthandToken">Discard</button>
-        </div>
+        
 
     </div>
     <div>
-        <div>Enter it on <b>Citrahold 3DS</b> by going into Settings -> "Input a shorthand token"</div>
-        <div>Or enter it on <b>Citrahold PC</b> in the box on startup, and then click Verify</div>
+        <ul>
+            <li>
+                Enter it on <b>Citrahold 3DS</b> by going into<br/>Settings -> "Input a shorthand token"
+            </li>
+            <li>
+                Or enter it on <b>Citrahold PC</b> in the box on startup, and then click Verify
+            </li>
+        </ul>
+        
         <p>You will need to generate a new shorthand token every time you link a device (PC or 3DS).</p>
         <p>It must be entered exactly correctly, case included.</p>
 

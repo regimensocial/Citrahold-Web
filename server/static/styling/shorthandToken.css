@@ -5,3 +5,8 @@
 #shorthandTokenPlace {
     font-size: larger;
 }
+
+#shorthandTokenBox {
+    border: 1px solid white;
+    padding: 20px;
+}

@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="keywords" content="Citrahold, Citra, 3DS, emulation, saves, cloud, sync">
+    <meta name="description" content="Citrahold is a simple way to sync 3DS game saves between devices">
+    <meta name="author" content="Jamie Adams">
+    
+    {{head}}
+
     <script>
         var SERVER_ADDRESS = "{{SERVER_ADDRESS}}";
     </script>
@@ -16,8 +21,22 @@
     <noscript>
         Let's be realistic, you need JavaScript for all websites nowadays. Please enable it.
     </noscript>
-    {{content}}
 
+    <div id="mobileButton">
+        <a href="#">Show</a>
+    </div>
+    <div id="navBar" class="hidden">
+        <ul>
+        </ul>
+    </div>
+
+    <div id="root">
+        <img src="/imagery/logotype.svg" alt="" id="logo">
+
+        {{content}}
+    </div>
+
+    <script src="/js/common.js" type="module"></script>
     {{script}}
 </body>
 

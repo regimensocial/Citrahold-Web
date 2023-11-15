@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     tokenExpiry.setSeconds(tokenExpiry.getSeconds() + 1);
                     clearInterval(tokenInterval);
 
-                    messageBox.innerHTML = `Here is your shorthand token. You must use it within 2 minutes or it will expire. It can only be used once.`;
+                    messageBox.innerHTML = `You must use it within 2 minutes or it will expire.<br/>It can only be used once.`;
                     tokenInterval = setInterval(() => {
 
                         citrahold.doesShorthandTokenExist(shorthandToken).then((exists) => {
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                     console.log("count");
                                     let minutes = Math.floor(difference / 60);
                                     let seconds = difference % 60;
-                                    messageBox.innerHTML = `Here is your shorthand token. You must use it within ${minutes ? (minutes + " minute") : ""} ${(minutes && seconds) ? "and " : ""} ${seconds ? (seconds + " seconds") : ""} or it will expire. It can only be used once.`;
+                                    messageBox.innerHTML = `You must use it within ${minutes ? (minutes + " minute") : ""} ${(minutes && seconds) ? "and " : ""} ${seconds ? (seconds + " seconds") : ""} or it will expire.<br/>It can only be used once.`;
                                 }
                             }
                         });

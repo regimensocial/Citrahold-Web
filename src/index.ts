@@ -13,7 +13,8 @@ axios.defaults.withCredentials = true;
 type userInfoType = {
     email: string,
     id: string,
-    directory: number,
+    directorySize: number,
+    
 }
 
 type serverResponse = {
@@ -29,11 +30,13 @@ type serverResponse = {
     files: Array<string>,
     webStatus: string,
     note: string,
+    maxUserDirSize: number
 }
 
-var userInfo: userInfoType;
+let userInfo: userInfoType;
+let maxUserDirSize = 0;
 
-var handleRequest = (action: string, data: object, res: Function, rej: Function, downloadingBinary: boolean = false) => axios.post(
+const handleRequest = (action: string, data: object, res: Function, rej: Function, downloadingBinary: boolean = false) => axios.post(
     `${serverAddress}/${action}`,
     data,
     {
@@ -78,14 +81,23 @@ const citrahold = {
                     userInfo = r.user;
                     loggedIn = true;
                 }
+                maxUserDirSize = r.maxUserDirSize;
 
                 finalResolve(loggedIn);
 
             }).catch((r) => {
                 online = false;
-                finalReject(false);
+                finalReject(r);
             });
         });
+    },
+
+    getMaxUserDirSize: () => {
+        return maxUserDirSize;
+    },
+
+    getUserInfo: () => {
+        return userInfo;
     },
 
     verifyEmail: (userID: string, code: string) => {
@@ -139,7 +151,6 @@ const citrahold = {
                         }, resolve, reject);
                     } else if (r.userID) {
                         // Server wants us to verify our email
-
                         finalResolve({
                             userID: r.userID
                         })
@@ -197,7 +208,18 @@ const citrahold = {
                     forWeb: true
                 }, resolve, reject);
             })).then((r: serverResponse) => {
+
+                // sort r.games by lastUpload
+
+                r.games.sort((a: any, b: any) => {
+                    var dateA: Date = new Date(a[1]);
+                    var dateB: Date = new Date(b[1]);
+
+                    return dateB.getTime() - dateA.getTime();
+                });
+
                 finalResolve(r.games);
+
             }).catch((r) => {
                 finalReject(r.response.data);
             })
@@ -260,10 +282,7 @@ const citrahold = {
                 promises.push(promise);
             });
 
-            // Wait for all promises to resolve
             await Promise.all(promises);
-
-            // Now all asynchronous operations in the forEach loop have completed
 
             const blob = await downloadZip(downloadedFiles).blob();
             const link = document.createElement("a")
@@ -349,7 +368,7 @@ const citrahold = {
         return new Promise((finalResolve, finalReject) => {
             (new Promise((resolve, reject) => {
                 handleRequest("deleteTokenCookie", {
-                }, resolve, reject);//
+                }, resolve, reject);
             })).then((r) => {
                 loggedIn = false;
                 finalResolve(true);

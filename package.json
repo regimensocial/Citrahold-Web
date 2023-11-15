@@ -5,9 +5,12 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all --parallel watch server",
-    "server": "nodemon -e js,html --ignore './src/' --ignore './server/static/' ./server/index.js",
+    "server": "nodemon -e js,html,css,json --ignore './src/' --ignore './server/static/' --ignore './server/dist' ./server/index.js",
     "watch": "webpack --watch --config webpack.config.js --mode development",
-    "build": "npx webpack --config webpack.config.js --mode production"
+    "build": "npx webpack --config webpack.config.js --mode production",
+    "buildWebsite": "npm run buildOnly --prefix server",
+    "buildWebsiteMinify": "npm run build --prefix server",
+    "buildAll": "npm run build && npm run buildWebsiteMinify"
   },
   "keywords": [],
   "author": "",

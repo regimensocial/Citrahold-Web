@@ -1,8 +1,146 @@
+@font-face {
+    font-family: LibreBaskerville-Regular;
+    src: url('/fonts/LibreBaskerville-Regular.ttf');
+}
+
+@font-face {
+    font-family: LibreBaskerville-Bold;
+    src: url('/fonts/LibreBaskerville-Bold.ttf');
+}
+
+@font-face {
+    font-family: LibreBaskerville-Italic;
+    src: url('/fonts/LibreBaskerville-Italic.ttf');
+}
+
 body {
-    font-family: "Open Sans", sans-serif;
+
+    font-family: 'Times New Roman', Times, LibreBaskerville-Regular, serif;
+
+
     font-size: 16px;
     margin: 0;
     padding: 0;
+
+
+    background-color: rgba(255, 218, 117, 0.5);
+    font-size: 15pt;
+}
+
+h1 {
+    font-family: 'Times New Roman', Times, LibreBaskerville-Bold, serif;
+    font-weight: 900;
+    /* italics */
+    font-style: normal;
+    margin: 0;
+}
+
+b {
+    font-family: 'Times New Roman', Times, LibreBaskerville-Bold, serif;
+}
+
+.caption {
+    margin-bottom: 20px;
+    font-style: italic;
+    font-family: 'Times New Roman', Times, LibreBaskerville-Italic, serif;
+}
+
+/* input button */
+input[type=button],
+button {
+    font-family: 'Times New Roman', Times, LibreBaskerville-Regular, serif;
+    font-size: 16pt;
+
+    background-color: rgba(255, 218, 117, 0.3);
+    border: none;
+
+    padding: 8px;
+
+    /* small caps */
+    text-transform: lowercase;
+    font-weight: 600;
+}
+
+input[type=button]:not(:disabled):hover,
+button:not(:disabled):hover {
+    cursor: pointer;
+    background-color: #FFDA7590;
+}
+
+input[type=text],
+input[type=email],
+input[type=password] {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16pt;
+    background-color: rgba(255, 255, 255, 1);
+    outline: none;
+    border: 3px solid rgba(255, 218, 117, 0.5);
+    padding: 8px;
+    width: auto;
+    max-width: 100%;
+
+}
+
+#root {
+    display: block;
+    margin: 0 auto;
+    width: 750px;
+    max-width: 100%;
+    padding: 45px;
+    box-sizing: border-box;
+
+    background-color: white;
+    min-height: 100%;
+
+    margin-top: 25px;
+    margin-bottom: -25px;
+
+    overflow-y: scroll;
+
+
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    /* border: 5px solid #ffffff2f;
+    border-top: none;
+    border-bottom: none; */
+    background-color: rgba(255, 255, 255, 0.8);
+
+}
+
+#logo {
+    display: block;
+    margin: 0 auto;
+    width: 60%;
+
+}
+
+#navBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 25px;
+
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 50px;
+
+    border-top-right-radius: 20px;
+
+    border-bottom-right-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+/* remove all list stylings from #navBar */
+#navBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navBar a {
+    text-decoration: none;
+    color: black;
 }
 
 .mustBeLoggedIn {
@@ -11,6 +149,24 @@ body {
 
 table {
     text-align: left;
+    max-width: 100%;
+}
+
+td,
+th {
+    padding: 5px;
+    text-align: center;
+    max-width: 100%;
+}
+
+.creds td,
+.creds th {
+    text-align: left;
+}
+
+th {
+    font-style: italic;
+    text-transform: lowercase;
 }
 
 html,
@@ -25,16 +181,16 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.3);
     z-index: 1;
-    opacity: 0.3;
+    opacity: 0.8;
     display: none;
 }
 
 .popupBox {
     background-color: white;
     margin: 0;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
@@ -44,10 +200,66 @@ body {
     display: none;
 }
 
+.popupBox td,
+.popupBox th {
+
+    text-align: left;
+}
+
 .popupBox td button {
     width: 100%;
 }
 
 .notices li {
     display: none;
+}
+
+
+#mobileButton,
+.mobileOnly {
+    display: none;
+}
+
+/* if screen smaller than 1300px */
+@media only screen and (max-width: 1250px) {
+    #navBar {
+        width: 100%;
+        margin-top: 0;
+        font-size: 30pt;
+        box-sizing: border-box;
+    }
+
+
+    #navBar a {
+        display: block;
+        width: 100%
+    }
+
+    .mobileOnly {
+        text-align: right;
+        padding-top: 50px;
+        font-style: italic;
+        display: block;
+    }
+
+
+    #mobileButton a {
+        text-decoration: none;
+        color: black;
+    }
+
+    #mobileButton {
+        display: block;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding: 20px;
+        background-color: white;
+        font-size: 20pt;
+        border-bottom-right-radius: 25px;
+    }
+
+    .hidden {
+        display: none;
+    }
 }
