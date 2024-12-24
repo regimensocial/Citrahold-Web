@@ -40,4 +40,4 @@ Everything in server/dist is static and ready for hosting.
 
 This is done in an unusual way because `citrahold.js` is written in TypeScript and requires compilation first.
 
-Citrahold Web deserves some TLC at some point
+Citrahold Web deserves some TLC at some point (maybe just a total rewrite)
